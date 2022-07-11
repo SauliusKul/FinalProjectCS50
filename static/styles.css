@@ -11,3 +11,62 @@
     margin-left: 10%;
     background-color: pink;
 }
+
+.navList {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+
+    margin: 0;
+    background-color: skyblue;
+}
+
+.navList {
+    list-style: none;
+}
+
+.navList li {
+    padding: 1em;
+    color:aliceblue;
+}
+
+.navList a {
+    text-decoration: none;
+    color: rgb(56, 165, 129);
+}
+
+.navList li:hover {
+    background-color: rgb(73, 73, 190);
+}
+
+.navList li:hover > a {
+    color: white;
+}
+
+
+@media all and (max-width: 800px) {
+    .navList {
+        justify-content: space-evenly;
+    }
+}
+
+@media all and (max-width: 600px) {
+    .navList {
+        flex-flow: column wrap;
+        justify-content: center;
+        padding: 0;
+    }
+}
+
+.gameContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between + safe;
+    align-items: flex-start;
+    align-content: center + safe;
+}
+
+.gameGame {
+    flex: 3 0 100%;
+    align-self: center;
+}
