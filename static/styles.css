@@ -1,8 +1,16 @@
 .banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
+    height: 4em;
     text-align: center;
     color: rgb(255, 72, 0);
     background-color: pink;
+}
+
+.noMargin {
+    margin: 0;
 }
 
 #gameSpace {
@@ -18,6 +26,7 @@
     justify-content: flex-end;
 
     margin: 0;
+    padding: 0;
     background-color: skyblue;
 }
 
@@ -26,8 +35,8 @@
 }
 
 .navList li {
-    padding: 1em;
-    color:aliceblue;
+    padding: 12px;
+    color:rgb(81, 160, 101);
 }
 
 .navList a {
@@ -39,22 +48,38 @@
     background-color: rgb(73, 73, 190);
 }
 
-.navList li:hover > a {
-    color: white;
+.navList li:hover {
+    color:greenyellow;
 }
 
+.selfLeft {
+    margin-right: auto;
+}
 
 @media all and (max-width: 800px) {
     .navList {
         justify-content: space-evenly;
+    }
+
+    .selfLeft {
+        margin-left: 0;
     }
 }
 
 @media all and (max-width: 600px) {
     .navList {
         flex-flow: column wrap;
-        justify-content: center;
         padding: 0;
+        text-align: center; 
+    }
+
+    .navList a li { 
+        border-top: 1px solid rgba(255, 255, 255,0.3); 
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
+      }
+    
+    .selfLeft {
+        margin-right: 0;
     }
 }
 
@@ -66,7 +91,7 @@
     align-content: center + safe;
 }
 
-.gameGame {
+.Game {
     flex: 3 0 100%;
     align-self: center;
 }

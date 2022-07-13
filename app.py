@@ -1,5 +1,5 @@
 from cs50 import SQL
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 from flask_session import Session
 
 app = Flask(__name__)
@@ -11,8 +11,6 @@ Session(app)
 
 @app.route("/")
 def hello_world():
-    a = 1 + 3
-    hi = "hiya"
     return render_template("index.html")
 
 @app.route("/leaderboard")
