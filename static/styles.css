@@ -13,24 +13,13 @@
     margin: 0;
 }
 
-#gameSpace {
-    width: 80%;
-    height: 80vh;
-    margin-left: 10%;
-    background-color: pink;
-}
-
 .navList {
     display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
+    flex-flow: row;
 
     margin: 0;
     padding: 0;
     background-color: skyblue;
-}
-
-.navList {
     list-style: none;
 }
 
@@ -46,9 +35,6 @@
 
 .navList li:hover {
     background-color: rgb(73, 73, 190);
-}
-
-.navList li:hover {
     color:greenyellow;
 }
 
@@ -56,13 +42,13 @@
     margin-right: auto;
 }
 
-@media all and (max-width: 800px) {
+@media all and (max-width: 900px) {
     .navList {
         justify-content: space-evenly;
     }
 
     .selfLeft {
-        margin-left: 0;
+        margin-right: 0;
     }
 }
 
@@ -77,21 +63,23 @@
         border-top: 1px solid rgba(255, 255, 255,0.3); 
         border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
       }
-    
-    .selfLeft {
-        margin-right: 0;
-    }
 }
 
 .gameContainer {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between + safe;
-    align-items: flex-start;
-    align-content: center + safe;
+    flex-flow: row wrap;
+    align-items: center;
+    text-align: center;
 }
 
-.Game {
-    flex: 3 0 100%;
-    align-self: center;
+.game {
+    display: flex;
+    aspect-ratio: 1 / 1;
+    flex: 3 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidePanel {
+    flex: 1 1; 
 }

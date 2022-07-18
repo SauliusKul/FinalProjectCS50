@@ -16,19 +16,18 @@
         {% block body %}
         {% endblock %}
         <ul class="navList">
-            <a class="selfLeft"><li>Hi</li></a>
+            <a href="/" class="selfLeft"><li>Hi</li></a>
             <a href="/">
                 <li>Home</li>
             </a>
             <a href="{{ url_for("leaderboard") }}">
                 <li>Leaderboard</li>
             </a>
-            <a href="/">
+            <a href="#">
                 <li>Connect5</li>
             </a>
 
         </ul>
-
 
         <main>
             {% block main %}
