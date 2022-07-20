@@ -1,3 +1,7 @@
+body {
+    margin: 0;
+}
+
 .banner {
     display: flex;
     justify-content: center;
@@ -19,6 +23,7 @@
 
     margin: 0;
     padding: 0;
+    margin-bottom: 2em;
     background-color: skyblue;
     list-style: none;
 }
@@ -74,10 +79,61 @@
 
 .game {
     display: flex;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 7 / 6;
     flex: 3 1;
     align-items: center;
     justify-content: center;
+    border: 2px solid rgb(0, 0, 0);
+}
+
+:root {
+    --square-size: 100%;
+    --token-size: calc(var(--square-size)*0.95);
+}
+
+.board {
+    display: grid;
+    grid: repeat(6, 1fr) / repeat(7, 1fr);
+    grid-template-areas: 
+        "......."
+        "......."
+        "......."
+        "......."
+        "......."
+        ".......";
+
+    /* gap: 2px 2px; */
+    place-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.cell {
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgb(0, 0, 0);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Why before and not just .cell.red-circle? */
+.cell.circle::before {
+    content: "";
+    height: var(--token-size);
+    width: var(--token-size);
+    border-radius: 50%;
+    position: absolute;
+}
+
+.cell.circle.red::before {
+    background-color: red;
+}
+
+.cell.circle.blue::before {
+    background-color: blue;
 }
 
 .sidePanel {

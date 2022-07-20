@@ -17,13 +17,70 @@ Connect4
         <div class="sidePanel">
             left
         </div>
-        <div class="game">       
-            main
+        <div class="game">
+            <div class="board">
+                <div class="cell circle red"></div>
+                <div class="cell circle blue"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+            </div>
         </div>
 
         <div class="sidePanel">
             right
         </div>
+    </div>
+
+    <div class="xWin" hidden>
+        <div id="winning-message">{{ wPlayer }} wins!</div>
+        <form action="/">
+            <button> Play again </button>
+        </form>
+        <form action="/leaderboard">
+            <button>Leaderboard</button>
+        </form>
+    </div>
+
+    <div class="xLoss">
+
     </div>
     <p style="text-align: center">Footer</p>
 {% endblock %}
