@@ -84,6 +84,7 @@ body {
     align-items: center;
     justify-content: center;
     border: 2px solid rgb(0, 0, 0);
+    cursor: pointer;
 }
 
 :root {
@@ -119,7 +120,12 @@ body {
     position: relative;
 }
 
+.cell:not(.circle):hover::before {
+    opacity: 30%;
+}
+
 /* Why before and not just .cell.red-circle? */
+.cell:not(.circle):hover::before,
 .cell.circle::before {
     content: "";
     height: var(--token-size);
@@ -128,14 +134,62 @@ body {
     position: absolute;
 }
 
+.cell.circle {
+    cursor: not-allowed;
+}
+
+.cell.red:not(.circle):hover::before,
 .cell.circle.red::before {
     background-color: red;
 }
 
+.cell.blue:not(.circle):hover::before,
 .cell.circle.blue::before {
     background-color: blue;
 }
 
 .sidePanel {
     flex: 1 1; 
+}
+
+.xWin {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: whitesmoke;
+    font-size: 3vw;
+    flex-direction: column;
+}
+
+.winning-message {
+    padding: 1% 1%;
+}
+
+.xWin form {
+    height: 10%;
+    width: 25%;
+    margin-top: 0.5%;
+    margin-bottom: 0.5%;
+}
+
+button{
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.xWin form:hover button:hover {
+    background-color: white;
+    font-weight: bold;
+}
+
+.xWin.show {
+    display: flex;
 }
