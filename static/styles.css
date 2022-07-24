@@ -134,16 +134,14 @@ body {
 
 /* Why before and not just .cell.red-circle? */
 .cell:not(.circle):hover::before,
+.red-opaque::before,
+.blue-opaque::before,
 .cell.circle::before {
     content: "";
     height: var(--token-size);
     width: var(--token-size);
     border-radius: 50%;
     position: absolute;
-}
-
-.cell.circle {
-    cursor: not-allowed;
 }
 
 .cell.red:not(.circle):hover::before,
