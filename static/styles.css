@@ -128,6 +128,8 @@ body {
     position: relative;
 }
 
+.red-opaque::before,
+.blue-opaque::before,
 .cell:not(.circle):hover::before {
     opacity: 30%;
 }
@@ -144,11 +146,13 @@ body {
     position: absolute;
 }
 
+.red-opaque::before,
 .cell.red:not(.circle):hover::before,
 .cell.circle.red::before {
     background-color: red;
 }
 
+.blue-opaque::before,
 .cell.blue:not(.circle):hover::before,
 .cell.circle.blue::before {
     background-color: blue;

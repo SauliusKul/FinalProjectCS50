@@ -8,29 +8,14 @@ $(document).ready(function() {
         //if ($(cell).mouseover(function (){}))
     $(".cell").click(function() {
 
-        let selectedColumn = $(this).attr("class");
-        selectedColumn = selectedColumn.split(/\s+/)[0];
+        selectedColumn = firstObjectClass($(this));
 
-        let lowestUnoccupiedRow = 0;
+        let lowestUnoccupiedRow = findLowestUnoccupiedRow(selectedColumn);
 
-        for (i = 1; i <= rowCount; i++)
-        {   
-            lowestUnoccupiedCellAttributes = $(".wrapper-row" + i + " ." + selectedColumn).attr("class");
-            if (! (lowestUnoccupiedCellAttributes.includes("red") || lowestUnoccupiedCellAttributes.includes("blue")))
-            {
-                if (i > lowestUnoccupiedRow)
-                {
-                    lowestUnoccupiedRow = i;
-                }
-            }
-        }
-
-        if (lowestUnoccupiedRow > 1)
-        {
-            $(".wrapper-row" + (lowestUnoccupiedRow - 1) + " ." + selectedColumn).addClass("circle");
-        }
+        addClassToLowestUnoccupiedCell(selectedColumn, lowestUnoccupiedRow, "circle");
         
         let currentLowestCell = $(".wrapper-row" + lowestUnoccupiedRow + " ." + selectedColumn);
+        
         if (clickCounter % 2 == 0) {
             currentLowestCell.addClass("red");
         }
@@ -46,9 +31,35 @@ $(document).ready(function() {
     })
 
 
-    $(".cell").hover(function() {
+    // $(".cell").hover(function() {
+    //         hoveredColumn = firstObjectClass($(this));
+    //         let lowestUnoccupiedRow = findLowestUnoccupiedRow(hoveredColumn);
+            
+    //         if (clickCounter % 2 == 0)
+    //         {
+    //             addClassToLowestUnoccupiedCell(hoveredColumn, lowestUnoccupiedRow, "red-opaque");  
+    //         }
 
-    })
+    //         else
+    //         {
+    //             addClassToLowestUnoccupiedCell(hoveredColumn, lowestUnoccupiedRow, "blue-opaque");
+    //         }
+    //     },
+
+    //     function() {
+    //         hoveredColumn = firstObjectClass($(this));
+    //         let lowestUnoccupiedRow = findLowestUnoccupiedRow(hoveredColumn);
+            
+    //         if (clickCounter % 2 == 0)
+    //         {
+    //             removeClassFromLowestUnoccupiedCell(hoveredColumn, lowestUnoccupiedRow, "red-opaque");  
+    //         }
+
+    //         else
+    //         {
+    //             removeClassFromLowestUnoccupiedCell(hoveredColumn, lowestUnoccupiedRow, "blue-opaque");
+    //         }
+    // })
 
     function findLowestUnoccupiedRow(selectedColumn)
     {
@@ -68,6 +79,28 @@ $(document).ready(function() {
 
         return lowestUnoccupiedRow;
     }
+
+    function firstObjectClass(itemObject)
+    {
+        return itemObject.attr("class").split(/\s+/)[0];
+    }
+
+    function addClassToLowestUnoccupiedCell (selectedColumn, lowestUnoccupiedRow, appendedClass)
+    {
+        if (lowestUnoccupiedRow > 1)
+        {
+            $(".wrapper-row" + (lowestUnoccupiedRow - 1) + " ." + selectedColumn).addClass(appendedClass);
+        }  
+    }
+
+    function removeClassFromLowestUnoccupiedCell (selectedColumn, lowestUnoccupiedRow, appendedClass)
+    {
+        if (lowestUnoccupiedRow > 1)
+        {
+            $(".wrapper-row" + (lowestUnoccupiedRow - 1) + " ." + selectedColumn).removeClass(appendedClass);
+        } 
+    }
+
 })
 
 
