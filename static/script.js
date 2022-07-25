@@ -3,63 +3,168 @@ script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
 document.getElementsByTagName('head')[0].appendChild(script);
 
 $(document).ready(function() {
-    let rowCount = 6;
-    let clickCounter = 0;
-        //if ($(cell).mouseover(function (){}))
+    var columnCount = 7;
+    var rowCount = 6;
+    var clickCounter = 0;
+    let numberToWin = 4;
+
+        $(".cell").hover(function() {
+            hoveredColumn = firstObjectClass($(this));
+            let lowestUnoccupiedRow = findLowestUnoccupiedRow(hoveredColumn);
+            
+            if (clickCounter % 2 == 0)
+            {
+                addClassToCell(hoveredColumn, lowestUnoccupiedRow, "rd-opaque");  
+            }
+
+            else
+            {
+                addClassToCell(hoveredColumn, lowestUnoccupiedRow, "blu-opaque");
+            }
+        },
+
+        function() {
+            hoveredColumn = firstObjectClass($(this));
+            let lowestUnoccupiedRow = findLowestUnoccupiedRow(hoveredColumn);
+            
+            if (clickCounter % 2 == 0)
+            {
+                removeClassFromCell(hoveredColumn, lowestUnoccupiedRow, "rd-opaque");  
+            }
+
+            else
+            {
+                removeClassFromCell(hoveredColumn, lowestUnoccupiedRow, "blu-opaque");
+            }
+    })
+
+
     $(".cell").click(function() {
 
         selectedColumn = firstObjectClass($(this));
 
         let lowestUnoccupiedRow = findLowestUnoccupiedRow(selectedColumn);
 
-        addClassToLowestUnoccupiedCell(selectedColumn, lowestUnoccupiedRow, "circle");
+        addClassToCell(selectedColumn, lowestUnoccupiedRow, "circle", 1);
         
         let currentLowestCell = $(".wrapper-row" + lowestUnoccupiedRow + " ." + selectedColumn);
         
         if (clickCounter % 2 == 0) {
             currentLowestCell.addClass("red");
+            removeClassFromCell(selectedColumn, lowestUnoccupiedRow, "rd-opaque");
         }
 
         else 
         {
             currentLowestCell.addClass("blue");
+            removeClassFromCell(selectedColumn, lowestUnoccupiedRow, "blu-opaque");
         }
 
-        //$(this).css("background-color", "blue");
+        let table = Array();
+
+        for (i = 0; i < rowCount; i++)
+        {
+            table[i] = new Array(columnCount);
+        }
+
+        for (i = 0; i < rowCount; i++)
+        {
+            for (j = 0; j < columnCount; j++)
+            {   
+                // Unnecessary
+                table[i][j] = 0;
+
+                let rowString = ".wrapper-row" + (i + 1) + " .col" + (j + 1);
+
+                if ($(rowString).attr("class").includes("red"))
+                {
+                    table[i][j] = "r";
+                }
+
+                if ($(rowString).attr("class").includes("blue"))
+                {
+                    table[i][j] = "b";
+                }
+            }
+        }
+
+        var redWinningConditions = {horizontalCount:0, verticalCount:0, rlDiagonalCount:0, lrDiagonalCount:0};
+        var blueWinningConditions = {horizontalCount:0, verticalCount:0, rlDiagonalCount:0, lrDiagonalCount:0};
+
+        for (i = 0; i < rowCount; i++)
+        {
+            for (j = 0; j < columnCount; j++)
+            {
+                
+                if (checkHorizontalTable("r", redWinningConditions, table, i, j))
+                {
+                    console.log("red wins!");
+                }
+
+                if (checkHorizontalTable("b", blueWinningConditions, table, i, j))
+                {
+                    console.log("Blue wins!");
+                }
+            }
+        }
+
+        // for (i = 0; i < columnCount; i++)
+        // {
+        //     if (checkVerticalTable("r", redWinningConditions, table, i))
+        //     {
+        //         console.log("red wins!");
+        //     }
+
+        //     if (checkVerticalTable("b", blueWinningConditions, table, i))
+        //     {
+        //         console.log("blue wins!");
+        //     }
+        // }
 
         clickCounter++;
     })
 
 
-    // $(".cell").hover(function() {
-    //         hoveredColumn = firstObjectClass($(this));
-    //         let lowestUnoccupiedRow = findLowestUnoccupiedRow(hoveredColumn);
+    function checkHorizontalTable(colour, winningConditions, table, row, column)
+    {
+        if (table[row][column] == colour)
+        {
+            winningConditions.horizontalCount++;
             
-    //         if (clickCounter % 2 == 0)
-    //         {
-    //             addClassToLowestUnoccupiedCell(hoveredColumn, lowestUnoccupiedRow, "red-opaque");  
-    //         }
+            if (winningConditions.horizontalCount == numberToWin)
+            {   
+                return true;
+            }
+        }
 
-    //         else
-    //         {
-    //             addClassToLowestUnoccupiedCell(hoveredColumn, lowestUnoccupiedRow, "blue-opaque");
-    //         }
-    //     },
+        else 
+        {
+            winningConditions.horizontalCount = 0;
+            return false;
+        }
+    }
 
-    //     function() {
-    //         hoveredColumn = firstObjectClass($(this));
-    //         let lowestUnoccupiedRow = findLowestUnoccupiedRow(hoveredColumn);
-            
-    //         if (clickCounter % 2 == 0)
-    //         {
-    //             removeClassFromLowestUnoccupiedCell(hoveredColumn, lowestUnoccupiedRow, "red-opaque");  
-    //         }
-
-    //         else
-    //         {
-    //             removeClassFromLowestUnoccupiedCell(hoveredColumn, lowestUnoccupiedRow, "blue-opaque");
-    //         }
-    // })
+    function checkVerticalTable(colour, winningConditions, table, column)
+    {
+        for (i = 0; i < rowCount; i++)
+        {
+            if (table[i][column] == colour)
+            {
+                winningConditions.verticalCount++;
+                
+                if (winningConditions.verticalCount == numberToWin)
+                {   
+                    return true;
+                }
+            }
+    
+            else 
+            {
+                winningConditions.verticalCount = 0;
+                return false;
+            }
+        }
+    }
 
     function findLowestUnoccupiedRow(selectedColumn)
     {
@@ -85,20 +190,14 @@ $(document).ready(function() {
         return itemObject.attr("class").split(/\s+/)[0];
     }
 
-    function addClassToLowestUnoccupiedCell (selectedColumn, lowestUnoccupiedRow, appendedClass)
+    function addClassToCell (column, row, Class, modifier = 0)
     {
-        if (lowestUnoccupiedRow > 1)
-        {
-            $(".wrapper-row" + (lowestUnoccupiedRow - 1) + " ." + selectedColumn).addClass(appendedClass);
-        }  
+        $(".wrapper-row" + (row - modifier) + " ." + column).addClass(Class);
     }
 
-    function removeClassFromLowestUnoccupiedCell (selectedColumn, lowestUnoccupiedRow, appendedClass)
+    function removeClassFromCell (column, row, Class, modifier = 0)
     {
-        if (lowestUnoccupiedRow > 1)
-        {
-            $(".wrapper-row" + (lowestUnoccupiedRow - 1) + " ." + selectedColumn).removeClass(appendedClass);
-        } 
+        $(".wrapper-row" + (row - modifier) + " ." + column).removeClass(Class);
     }
 
 })
