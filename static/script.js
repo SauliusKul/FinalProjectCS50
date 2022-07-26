@@ -62,14 +62,14 @@ $(document).ready(function() {
 
         let table = Array();
 
-        for (i = 0; i < rowCount; i++)
+        for (let i = 0; i < rowCount; i++)
         {
             table[i] = new Array(columnCount);
         }
 
-        for (i = 0; i < rowCount; i++)
+        for (let i = 0; i < rowCount; i++)
         {
-            for (j = 0; j < columnCount; j++)
+            for (let j = 0; j < columnCount; j++)
             {   
                 // Unnecessary
                 table[i][j] = 0;
@@ -91,9 +91,10 @@ $(document).ready(function() {
         var redWinningConditions = {horizontalCount:0, verticalCount:0, rlDiagonalCount:0, lrDiagonalCount:0};
         var blueWinningConditions = {horizontalCount:0, verticalCount:0, rlDiagonalCount:0, lrDiagonalCount:0};
 
-        for (i = 0; i < rowCount; i++)
+        // Connect the two for's
+        for (let i = 0; i < rowCount; i++)
         {
-            for (j = 0; j < columnCount; j++)
+            for (let j = 0; j < columnCount; j++)
             {
                 
                 if (checkHorizontalTable("r", redWinningConditions, table, i, j))
@@ -108,18 +109,45 @@ $(document).ready(function() {
             }
         }
 
-        // for (i = 0; i < columnCount; i++)
-        // {
-        //     if (checkVerticalTable("r", redWinningConditions, table, i))
-        //     {
-        //         console.log("red wins!");
-        //     }
+        for (let i = 0; i < columnCount; i++)
+        {    
+            if (checkVerticalTable("r", redWinningConditions, table, i))
+            {
+                console.log("red wins!");
+            }
 
-        //     if (checkVerticalTable("b", blueWinningConditions, table, i))
-        //     {
-        //         console.log("blue wins!");
-        //     }
-        // }
+            if (checkVerticalTable("b", blueWinningConditions, table, i))
+            {
+                console.log("blue wins!");
+            }
+        }
+
+        // Could do recursion here?
+        for (let i = 1; i < rowCount - (numberToWin - 1); i++)
+        {
+            if (checkVerticalLR("r", redWinningConditions, table, i, 0))
+            {
+                console.log("red wins!");
+            }
+
+            if (checkVerticalLR("b", redWinningConditions, table, i, 0))
+            {
+                console.log("blue wins!");
+            }    
+        }
+
+        for (let j = 0; j < columnCount - (numberToWin - 1); j++)
+        {
+            if (checkVerticalLR("r", redWinningConditions, table, 0, j))
+            {
+                console.log("red wins!")
+            }
+
+            if (checkVerticalLR("b", redWinningConditions, table, 0, j))
+            {
+                console.log("blue wins!")
+            }
+        }
 
         clickCounter++;
     })
@@ -127,6 +155,7 @@ $(document).ready(function() {
 
     function checkHorizontalTable(colour, winningConditions, table, row, column)
     {
+        // Could create a new function
         if (table[row][column] == colour)
         {
             winningConditions.horizontalCount++;
@@ -146,12 +175,11 @@ $(document).ready(function() {
 
     function checkVerticalTable(colour, winningConditions, table, column)
     {
-        for (i = 0; i < rowCount; i++)
-        {
+        for (let i = 0; i < rowCount; i++)
+        {   
             if (table[i][column] == colour)
             {
-                winningConditions.verticalCount++;
-                
+                winningConditions.verticalCount++;                
                 if (winningConditions.verticalCount == numberToWin)
                 {   
                     return true;
@@ -161,8 +189,37 @@ $(document).ready(function() {
             else 
             {
                 winningConditions.verticalCount = 0;
-                return false;
             }
+        }
+
+        return false;
+    }
+
+    function checkVerticalLR(colour, winningConditions, table, row, column) 
+    {
+        if (row == rowCount || column == columnCount)
+        {
+            return false;
+        }
+
+        if (checkVerticalLR(colour, winningConditions, table, row + 1, column + 1)) 
+        {
+            return true;
+        }
+
+        if (table[row][column] == colour)
+        {
+            winningConditions.lrDiagonalCount++;
+            if (winningConditions.lrDiagonalCount == numberToWin)
+            {
+                return true;
+            }
+        }
+
+        else 
+        {
+            winningConditions.lrDiagonalCount = 0;
+            return false;
         }
     }
 
