@@ -273,7 +273,6 @@ $(document).ready(function() {
         $(".winning-message").append("Blue wins!");
         $(".winning-message").css("color", "blue");
     }
-
 })
 
 
