@@ -278,8 +278,6 @@ $(document).ready(function() {
 
 
 /*
-TODO: Make a low opacity circle appear if hovered over a column
-TODO: Check if there are 4 circles of the same colour connected
 TODO: Create an invisible circle 1 for each colour
 TODO: Create an AI to play against
 */

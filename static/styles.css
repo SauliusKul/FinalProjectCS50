@@ -75,6 +75,11 @@ body {
     flex-flow: row wrap;
     align-items: center;
     text-align: center;
+    font-size: 21px;
+}
+
+.sidePanel {
+    padding: 1.5%;
 }
 
 .game {
@@ -86,6 +91,21 @@ body {
     justify-content: center;
     border: 2px solid rgb(0, 0, 0);
     cursor: pointer;
+}
+
+@media all and (max-width: 900px)
+{
+    .gameContainer {
+        flex-flow: column;
+        width: 100%;
+        aspect-ratio: 7 / 6;
+        font-size: 18px;
+    }
+
+    .game {
+        max-width: 100%;
+        flex: 20 1;
+    }
 }
 
 :root {
@@ -176,6 +196,9 @@ body {
 
 .winning-message {
     padding: 1% 1%;
+    font-size: 5vw;
+    font-weight: bold;
+    -webkit-text-stroke: 0.5px black;
 }
 
 .xWin form {
