@@ -12,7 +12,6 @@ cs50==9.2.2
 dbus-python==1.2.18
 distlib==0.3.4
 distro==1.7.0
-distro-info===1.1build1
 filelock==3.6.0
 Flask==2.1.2
 Flask-Session==0.4.0
