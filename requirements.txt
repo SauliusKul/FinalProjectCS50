@@ -41,10 +41,6 @@ platformdirs==2.5.1
 ptyprocess==0.7.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.1
-PyGObject==3.42.0
-PyHamcrest==2.0.2
-PyJWT==2.4.0
-pyOpenSSL==21.0.0
 pyparsing==2.4.7
 pyrsistent==0.18.1
 pyserial==3.5
