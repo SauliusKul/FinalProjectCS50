@@ -88,8 +88,11 @@ $(document).ready(function() {
             }
         }
 
+        // Can be 1 variable :D
         var redWinningConditions = {horizontalCount:0, verticalCount:0, diagonalCount:0};
         var blueWinningConditions = {horizontalCount:0, verticalCount:0, diagonalCount:0};
+
+        
 
         // Connect the two for's
         for (let i = 0; i < rowCount; i++)
@@ -99,12 +102,12 @@ $(document).ready(function() {
                 
                 if (checkHorizontalTable("r", redWinningConditions, table, i, j))
                 {
-                    console.log("red wins!");
+                    redWins();
                 }
 
                 if (checkHorizontalTable("b", blueWinningConditions, table, i, j))
                 {
-                    console.log("Blue wins!");
+                    blueWins();
                 }
             }
         }
@@ -113,26 +116,26 @@ $(document).ready(function() {
         {    
             if (checkVerticalTable("r", redWinningConditions, table, i))
             {
-                console.log("red wins!");
+                redWins();
             }
 
             if (checkVerticalTable("b", blueWinningConditions, table, i))
             {
-                console.log("blue wins!");
+                blueWins();
             }
         }
 
         // Could do recursion here?
         for (let i = 1; i < rowCount - (numberToWin - 1); i++)
         {
-            if (checkDiagonal("r", redWinningConditions, table, i, 0, 1) || checkDiagonal("r", redWinningConditions, table, i, 0, -1)) 
+            if (checkDiagonal("r", redWinningConditions, table, i, 0, 1) || checkDiagonal("r", redWinningConditions, table, i, 6, -1)) 
             {
-                console.log("red wins!");
+                redWins();
             }
 
             if (checkDiagonal("b", blueWinningConditions, table, i, 0, 1) || checkDiagonal("b", blueWinningConditions, table, i, 0, -1))
             {
-                console.log("blue wins!");
+                blueWins();
             }    
         }
 
@@ -140,12 +143,12 @@ $(document).ready(function() {
         {
             if (checkDiagonal("r", redWinningConditions, table, 0, j, 1) || checkDiagonal("r", redWinningConditions, table, 0, columnCount - j, -1))
             {
-                console.log("red wins!");
+                redWins();
             }
 
             if (checkDiagonal("b", blueWinningConditions, table, 0, j, 1) || checkDiagonal("b", blueWinningConditions, table, 0, columnCount - j, -1))
             {
-                console.log("blue wins!");
+                blueWins();
             }
         }
 
@@ -199,7 +202,6 @@ $(document).ready(function() {
     {
         if (row == rowCount || column == columnCount || column == -1)
         {
-            console.log(row, column);
             return false;
         }
 
@@ -256,6 +258,20 @@ $(document).ready(function() {
     function removeClassFromCell (column, row, Class, modifier = 0)
     {
         $(".wrapper-row" + (row - modifier) + " ." + column).removeClass(Class);
+    }
+
+    function redWins()
+    {
+        $(".xWin").addClass("show");
+        $(".winning-message").append("Red wins!");
+        $(".winning-message").css("color", "red");
+    }
+
+    function blueWins()
+    {
+        $(".xWin").addClass("show");
+        $(".winning-message").append("Blue wins!");
+        $(".winning-message").css("color", "blue");
     }
 
 })
