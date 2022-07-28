@@ -6,7 +6,8 @@ $(document).ready(function() {
     var columnCount = 7;
     var rowCount = 6;
     var clickCounter = 0;
-    let numberToWin = 4;
+    var numberToWin = 4;
+    const emptyCondidtions = {horizontalCount:0, verticalCount:0, diagonalCount:0};
 
         $(".cell").hover(function() {
             hoveredColumn = firstObjectClass($(this));
@@ -67,6 +68,7 @@ $(document).ready(function() {
             table[i] = new Array(columnCount);
         }
 
+        // Rewrites the entire table each click
         for (let i = 0; i < rowCount; i++)
         {
             for (let j = 0; j < columnCount; j++)
@@ -89,10 +91,9 @@ $(document).ready(function() {
         }
 
         // Can be 1 variable :D
-        var redWinningConditions = {horizontalCount:0, verticalCount:0, diagonalCount:0};
-        var blueWinningConditions = {horizontalCount:0, verticalCount:0, diagonalCount:0};
+        var redWinningConditions = {...emptyCondidtions};
+        var blueWinningConditions = {...emptyCondidtions};
 
-        
 
         // Connect the two for's
         for (let i = 0; i < rowCount; i++)
@@ -103,13 +104,18 @@ $(document).ready(function() {
                 if (checkHorizontalTable("r", redWinningConditions, table, i, j))
                 {
                     redWins();
+                    console.log(".");
                 }
 
                 if (checkHorizontalTable("b", blueWinningConditions, table, i, j))
                 {
                     blueWins();
+                    console.log(".");
                 }
             }
+
+            blueWinningConditions.horizontalCount = 0;
+            redWinningConditions.horizontalCount = 0;
         }
 
         for (let i = 0; i < columnCount; i++)
@@ -117,12 +123,17 @@ $(document).ready(function() {
             if (checkVerticalTable("r", redWinningConditions, table, i))
             {
                 redWins();
+                console.log(".");
             }
 
             if (checkVerticalTable("b", blueWinningConditions, table, i))
             {
                 blueWins();
+                console.log(".");
             }
+
+            redWinningConditions.verticalCount = 0;
+            blueWinningConditions.verticalCount = 0;
         }
 
         // Could do recursion here?
@@ -131,11 +142,13 @@ $(document).ready(function() {
             if (checkDiagonal("r", redWinningConditions, table, i, 0, 1) || checkDiagonal("r", redWinningConditions, table, i, 6, -1)) 
             {
                 redWins();
+                console.log(".");
             }
 
             if (checkDiagonal("b", blueWinningConditions, table, i, 0, 1) || checkDiagonal("b", blueWinningConditions, table, i, 0, -1))
             {
                 blueWins();
+                console.log(".");
             }    
         }
 
@@ -144,15 +157,46 @@ $(document).ready(function() {
             if (checkDiagonal("r", redWinningConditions, table, 0, j, 1) || checkDiagonal("r", redWinningConditions, table, 0, columnCount - j, -1))
             {
                 redWins();
+                console.log(".");
             }
 
             if (checkDiagonal("b", blueWinningConditions, table, 0, j, 1) || checkDiagonal("b", blueWinningConditions, table, 0, columnCount - j, -1))
             {
                 blueWins();
+                console.log(".");
             }
         }
 
-        clickCounter++;
+        console.log(".wrapper-row" + lowestUnoccupiedRow + " ." + selectedColumn);
+        drawCount = 0;
+
+        for (let i = 0; i < columnCount; i++)
+        {
+            if(table[0][i] == "r" || table[0][i] == "b")
+            {
+                drawCount++;
+            }
+        }
+
+        if (drawCount == 7)
+        {
+            $(".xWin").addClass("show");
+            $(".winning-message").append("Draw!");
+            $(".winning-message").css("color", "pink");
+        }
+
+        try 
+        {
+            if ($(".wrapper-row" + lowestUnoccupiedRow + " ." + selectedColumn).attr("class").includes("circle"))
+            {
+                clickCounter++;
+            }            
+        }
+
+        catch(err) {}
+
+        //console.log(findLowestUnoccupiedRow(firstObjectClass($(this))));
+        //console.log(firstObjectClass($(this))[3] - 1);
     })
 
 
@@ -202,6 +246,7 @@ $(document).ready(function() {
     {
         if (row == rowCount || column == columnCount || column == -1)
         {
+            winningConditions.diagonalCount = 0;
             return false;
         }
 
@@ -215,6 +260,7 @@ $(document).ready(function() {
             winningConditions.diagonalCount++;
             if (winningConditions.diagonalCount == numberToWin)
             {
+                debugger;
                 return true;
             }
         }
@@ -273,11 +319,12 @@ $(document).ready(function() {
         $(".winning-message").append("Blue wins!");
         $(".winning-message").css("color", "blue");
     }
-
 })
 
 
 /*
 TODO: Create an invisible circle 1 for each colour
 TODO: Create an AI to play against
+TODO: Add draw logic
+TODO: Add login page and block users from entering without logging in!
 */
