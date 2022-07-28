@@ -68,6 +68,7 @@ $(document).ready(function() {
             table[i] = new Array(columnCount);
         }
 
+        // Rewrites the entire table each click
         for (let i = 0; i < rowCount; i++)
         {
             for (let j = 0; j < columnCount; j++)
@@ -166,7 +167,36 @@ $(document).ready(function() {
             }
         }
 
-        clickCounter++;
+        console.log(".wrapper-row" + lowestUnoccupiedRow + " ." + selectedColumn);
+        drawCount = 0;
+
+        for (let i = 0; i < columnCount; i++)
+        {
+            if(table[0][i] == "r" || table[0][i] == "b")
+            {
+                drawCount++;
+            }
+        }
+
+        if (drawCount == 7)
+        {
+            $(".xWin").addClass("show");
+            $(".winning-message").append("Draw!");
+            $(".winning-message").css("color", "pink");
+        }
+
+        try 
+        {
+            if ($(".wrapper-row" + lowestUnoccupiedRow + " ." + selectedColumn).attr("class").includes("circle"))
+            {
+                clickCounter++;
+            }            
+        }
+
+        catch(err) {}
+
+        //console.log(findLowestUnoccupiedRow(firstObjectClass($(this))));
+        //console.log(firstObjectClass($(this))[3] - 1);
     })
 
 
@@ -295,4 +325,6 @@ $(document).ready(function() {
 /*
 TODO: Create an invisible circle 1 for each colour
 TODO: Create an AI to play against
+TODO: Add draw logic
+TODO: Add login page and block users from entering without logging in!
 */

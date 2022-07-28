@@ -103,6 +103,7 @@ body {
     }
 
     .game {
+        min-height: 210px;
         max-width: 100%;
         flex: 20 1;
     }
