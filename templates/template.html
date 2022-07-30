@@ -19,16 +19,19 @@
         {% endblock %}
         <ul class="navList">
             <a href="/" class="selfLeft">
-                <li>Hi</li>
+                <li>Home</li>
             </a>
             <a href="/">
-                <li>Home</li>
+                <li>Connect4</li>
             </a>
             <a href="{{ url_for("leaderboard") }}">
                 <li>Leaderboard</li>
             </a>
-            <a href="#">
-                <li>Connect5</li>
+            <a href="{{ url_for("login") }}">
+                <li>Login</li>
+            </a>
+            <a href="{{ url_for("register") }}">
+                <li>Register</li>
             </a>
         </ul>
 

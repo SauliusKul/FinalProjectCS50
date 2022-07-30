@@ -104,13 +104,11 @@ $(document).ready(function() {
                 if (checkHorizontalTable("r", redWinningConditions, table, i, j))
                 {
                     redWins();
-                    console.log(".");
                 }
 
                 if (checkHorizontalTable("b", blueWinningConditions, table, i, j))
                 {
                     blueWins();
-                    console.log(".");
                 }
             }
 
@@ -123,13 +121,11 @@ $(document).ready(function() {
             if (checkVerticalTable("r", redWinningConditions, table, i))
             {
                 redWins();
-                console.log(".");
             }
 
             if (checkVerticalTable("b", blueWinningConditions, table, i))
             {
                 blueWins();
-                console.log(".");
             }
 
             redWinningConditions.verticalCount = 0;
@@ -142,13 +138,11 @@ $(document).ready(function() {
             if (checkDiagonal("r", redWinningConditions, table, i, 0, 1) || checkDiagonal("r", redWinningConditions, table, i, 6, -1)) 
             {
                 redWins();
-                console.log(".");
             }
 
-            if (checkDiagonal("b", blueWinningConditions, table, i, 0, 1) || checkDiagonal("b", blueWinningConditions, table, i, 0, -1))
+            if (checkDiagonal("b", blueWinningConditions, table, i, 0, 1) || checkDiagonal("b", blueWinningConditions, table, i, 6, -1))
             {
                 blueWins();
-                console.log(".");
             }    
         }
 
@@ -157,17 +151,14 @@ $(document).ready(function() {
             if (checkDiagonal("r", redWinningConditions, table, 0, j, 1) || checkDiagonal("r", redWinningConditions, table, 0, columnCount - j, -1))
             {
                 redWins();
-                console.log(".");
             }
 
             if (checkDiagonal("b", blueWinningConditions, table, 0, j, 1) || checkDiagonal("b", blueWinningConditions, table, 0, columnCount - j, -1))
             {
                 blueWins();
-                console.log(".");
             }
         }
 
-        console.log(".wrapper-row" + lowestUnoccupiedRow + " ." + selectedColumn);
         drawCount = 0;
 
         for (let i = 0; i < columnCount; i++)
@@ -195,8 +186,6 @@ $(document).ready(function() {
 
         catch(err) {}
 
-        //console.log(findLowestUnoccupiedRow(firstObjectClass($(this))));
-        //console.log(firstObjectClass($(this))[3] - 1);
     })
 
 
@@ -325,6 +314,5 @@ $(document).ready(function() {
 /*
 TODO: Create an invisible circle 1 for each colour
 TODO: Create an AI to play against
-TODO: Add draw logic
 TODO: Add login page and block users from entering without logging in!
 */

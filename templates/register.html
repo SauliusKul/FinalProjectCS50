@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "template.html" %}
 
 {% block title %}
 Register
@@ -8,4 +8,21 @@ Register
 {% endblock %}
 
 {% block main %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="flash-message">{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+<p class="form-message"><strong>DO NOT USE YOUR REAL PASSWORD!!!</strong> Enter a username and password below to register!</p>
+<div class="form-div">
+    <form method="post" autocomplete="off">
+        <input autofocus name="username" placeholder="Username">
+        <input autofocus type="password" name="password" placeholder="Password">
+        <input autofocus type="password" name="confirmPassword" placeholder="Confirm password">
+        <button type="submit">Submit</button>
+    </form>
+</div>
 {% endblock %}
