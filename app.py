@@ -1,5 +1,6 @@
 import sqlite3
-from flask import Flask, render_template, url_for, request, flash
+import json
+from flask import Flask, render_template, url_for, request, flash, redirect
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -60,18 +61,26 @@ def register():
         db.commit()
         cursor.close()
 
-        # connection = sqlite3.connect("aquarium.db")
-        # cursor = connection.cursor()
-        # cursor.execute("CREATE TABLE fish (name TEXT, species TEXT, tank_number INTEGER)")
-        # cursor.execute("INSERT INTO fish VALUES ('Sammy', 'shark', 1)")
-        # cursor.execute("SELECT * FROM fish")
-        # print(cursor.fetchall())
-
-
         flash("Registered sucessfully!", "info")
 
     return render_template("register.html")
 
 @app.route("/leaderboard")
 def leaderboard():
-    return render_template("leaderboard.html")
+    db = sqlite3.connect("user_info.db")
+    cursor = db.cursor()
+
+    cursor.execute("SELECT name, rank FROM users ORDER BY rank DESC;")
+
+    users = cursor.fetchall()
+    print(users)
+
+    return render_template("leaderboard.html", users=users)
+
+@app.route("/gameOver", methods=["GET", "POST"])
+def gameOver():
+    if request.method == "POST":
+        # If user logged in add to DB games played++
+        print(request.form.get("increment"))
+
+    return "0"

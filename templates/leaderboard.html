@@ -5,12 +5,26 @@ Leaderboard
 {% endblock %}
 
 {% block main %}
-<table>
-    <td>
-        1.
-    </td>
-    <td>
-        Dud
-    </td>
+<table class="table">
+    <thead>
+        <th>
+            User
+        </th>
+        <th>
+            Games played
+        </th>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>
+                {{ user[0] }}
+            </td>
+            <td>
+                {{ user[1] }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endblock %}

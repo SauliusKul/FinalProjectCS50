@@ -174,6 +174,7 @@ $(document).ready(function() {
             $(".xWin").addClass("show");
             $(".winning-message").append("Draw!");
             $(".winning-message").css("color", "pink");
+            sendIncrementAjax();
         }
 
         try 
@@ -300,6 +301,8 @@ $(document).ready(function() {
         $(".xWin").addClass("show");
         $(".winning-message").append("Red wins!");
         $(".winning-message").css("color", "red");
+
+        sendIncrementAjax();
     }
 
     function blueWins()
@@ -307,6 +310,17 @@ $(document).ready(function() {
         $(".xWin").addClass("show");
         $(".winning-message").append("Blue wins!");
         $(".winning-message").css("color", "blue");
+
+        sendIncrementAjax();
+    }
+
+    function sendIncrementAjax()
+    {
+        $.ajax({
+            url: "/gameOver",
+            type: "POST",
+            data: {"increment":1}
+        });
     }
 })
 
