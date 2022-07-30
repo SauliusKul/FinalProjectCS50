@@ -216,7 +216,8 @@ body {
     cursor: pointer;
 }
 
-.xWin form:hover button:hover {
+.xWin form:hover button:hover,
+.form-div button:hover {
     background-color: white;
     font-weight: bold;
 }

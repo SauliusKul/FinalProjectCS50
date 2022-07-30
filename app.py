@@ -53,14 +53,11 @@ def register():
         userInfo.append(generate_password_hash(password))
         userInfo.append(0)
 
-        print(userInfo)
-
         cursor = db.cursor()
 
-        print(cursor.execute("SELECT * FROM users").fetchall())
-
-        print(cursor.execute("INSERT INTO users (name, hashed_password, rank) VALUES (?, ?, ?)", ("s", "s", 1)).fetchall())
+        cursor.execute("INSERT INTO users (name, hashed_password, rank) VALUES (?, ?, ?)", userInfo)
         
+        db.commit()
         cursor.close()
 
         # connection = sqlite3.connect("aquarium.db")
