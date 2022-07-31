@@ -34,6 +34,10 @@ def register():
             flash("Username is already taken", "info")
             return render_template("register.html")
 
+        if (len(userInfo[0]) > 100):
+            flash("Username cannot excede 100 characters")
+            return render_template("register.html")
+
         cursor.close()
 
         password = request.form.get("password")
