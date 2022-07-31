@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from flask import Flask, render_template, url_for, request, flash, redirect, session
+from flask import Flask, render_template, url_for, request, flash, redirect, session, get_flashed_messages
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -12,7 +12,7 @@ app.config["SESSION_PERMANENT"] = False
 Session(app)
 
 @app.route("/")
-def hello_world():
+def index():
     return render_template("index.html")
 
 @app.route("/register", methods=["GET", "POST"])
@@ -61,7 +61,7 @@ def register():
         db.commit()
         cursor.close()
 
-        flash("Registered sucessfully!", "info")
+        flash("Registered sucessfully!")
         return redirect("/login")
 
     return render_template("register.html")
@@ -69,6 +69,7 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
+    get_flashed_messages()
     session.clear()
 
     if (request.method == "POST"):
@@ -97,8 +98,8 @@ def login():
             flash("Password/Username do not match")
             return render_template("login.html")
         
-        session["user_id"] = dbUserInfo[0][1]
         flash("You have logged in successfully!")
+        session["user_id"] = dbUserInfo[0][1]
     return render_template("login.html")
 
 @app.route("/logout")
@@ -115,7 +116,6 @@ def leaderboard():
     cursor.execute("SELECT name, rank FROM users ORDER BY rank DESC;")
 
     users = cursor.fetchall()
-    print(users)
 
     return render_template("leaderboard.html", users=users)
 
@@ -126,7 +126,7 @@ def gameOver():
         db = sqlite3.connect("user_info.db")
         cursor = db.cursor()
 
-        if session["user_id"]:
+        if ("user_id" in session and session["user_id"]):
             cursor.execute("UPDATE users SET rank = rank + 1 WHERE name = ?", [session["user_id"]])
             db.commit()
             cursor.close()

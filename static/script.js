@@ -299,7 +299,6 @@ $(document).ready(function() {
 
     function redWins()
     {   
-        debugger;
         if (winCount == 0)
         {
             $(".xWin").addClass("show");
@@ -309,7 +308,6 @@ $(document).ready(function() {
             sendIncrementAjax();
 
             winCount++;
-            console.log(winCount);
         }
     }
 
