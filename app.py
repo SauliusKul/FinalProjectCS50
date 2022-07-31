@@ -13,7 +13,6 @@ Session(app)
 
 @app.route("/")
 def hello_world():
-    session["user_id"] = ""
     return render_template("index.html")
 
 @app.route("/register", methods=["GET", "POST"])
@@ -35,7 +34,7 @@ def register():
             return render_template("register.html")
 
         if (len(userInfo[0]) > 100):
-            flash("Username cannot excede 100 characters")
+            flash("Username cannot excede 100 characters >:(")
             return render_template("register.html")
 
         cursor.close()
@@ -63,7 +62,7 @@ def register():
         cursor.close()
 
         flash("Registered sucessfully!", "info")
-        return render_template("login.html")
+        return redirect("/login")
 
     return render_template("register.html")
 
