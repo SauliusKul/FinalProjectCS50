@@ -7,9 +7,11 @@ $(document).ready(function() {
     var rowCount = 6;
     var clickCounter = 0;
     var numberToWin = 4;
+    var winCount = 0;
     const emptyCondidtions = {horizontalCount:0, verticalCount:0, diagonalCount:0};
 
         $(".cell").hover(function() {
+
             hoveredColumn = firstObjectClass($(this));
             let lowestUnoccupiedRow = findLowestUnoccupiedRow(hoveredColumn);
             
@@ -250,7 +252,6 @@ $(document).ready(function() {
             winningConditions.diagonalCount++;
             if (winningConditions.diagonalCount == numberToWin)
             {
-                debugger;
                 return true;
             }
         }
@@ -297,21 +298,33 @@ $(document).ready(function() {
     }
 
     function redWins()
-    {
-        $(".xWin").addClass("show");
-        $(".winning-message").append("Red wins!");
-        $(".winning-message").css("color", "red");
+    {   
+        debugger;
+        if (winCount == 0)
+        {
+            $(".xWin").addClass("show");
+            $(".winning-message").append("Red wins!");
+            $(".winning-message").css("color", "red");
 
-        sendIncrementAjax();
+            sendIncrementAjax();
+
+            winCount++;
+            console.log(winCount);
+        }
     }
 
     function blueWins()
     {
-        $(".xWin").addClass("show");
-        $(".winning-message").append("Blue wins!");
-        $(".winning-message").css("color", "blue");
-
-        sendIncrementAjax();
+        if (winCount == 0)
+        {
+            $(".xWin").addClass("show");
+            $(".winning-message").append("Blue wins!");
+            $(".winning-message").css("color", "blue");
+    
+            sendIncrementAjax();
+    
+            winCount++;    
+        }
     }
 
     function sendIncrementAjax()

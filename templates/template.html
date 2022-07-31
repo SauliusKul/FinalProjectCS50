@@ -18,22 +18,27 @@
         {% block body %}
         {% endblock %}
         <ul class="navList">
-            <a href="/" class="selfLeft">
-                <li>Home</li>
-            </a>
-            <a href="/">
-                <li>Connect4</li>
-            </a>
-            <a href="{{ url_for("leaderboard") }}">
-                <li>Leaderboard</li>
-            </a>
-            <a href="{{ url_for("login") }}">
-                <li>Login</li>
-            </a>
-            <a href="{{ url_for("register") }}">
-                <li>Register</li>
-            </a>
+            <a href="/" class="selfLeft"><li>Home</li></a>
+            <a href="/"><li>Connect4</li></a>
+            <a href="{{ url_for("leaderboard") }}"><li>Leaderboard</li></a>
+            
+            {% if session["user_id"] %}
+            <a href="{{ url_for("logout") }}"><li>Logout</li></a>
+
+            {% else %}
+            <a href="{{ url_for("login") }}"><li>Login</li></a>
+            <a href="{{ url_for("register") }}"><li>Register</li></a>
+
+            {% endif %}
         </ul>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="flash-message">{{message}}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
         <main>
             {% block main %}

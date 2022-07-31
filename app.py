@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from flask import Flask, render_template, url_for, request, flash, redirect
+from flask import Flask, render_template, url_for, request, flash, redirect, session
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -13,11 +13,8 @@ Session(app)
 
 @app.route("/")
 def hello_world():
+    session["user_id"] = ""
     return render_template("index.html")
-
-@app.route("/login")
-def login():
-    return render_template("login.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -62,8 +59,50 @@ def register():
         cursor.close()
 
         flash("Registered sucessfully!", "info")
+        return render_template("login.html")
 
     return render_template("register.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    session.clear()
+
+    if (request.method == "POST"):
+        db = sqlite3.connect("user_info.db")
+
+        userInfo = {"username":"",
+                    "password":""}
+        userInfo["username"] = (request.form.get("username"))
+        
+        if not userInfo["username"]:
+            flash("Username was not provided")
+            return render_template("login.html")
+
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM users WHERE name = ?", [userInfo["username"]])
+        dbUserInfo = cursor.fetchall()
+        cursor.close()
+
+        if (not len(dbUserInfo) == 1):
+            flash("This username does not exist!")
+            return render_template("login.html")
+
+        password = dbUserInfo[0][2]
+
+        if (request.form.get("password") == "" or not check_password_hash(password, request.form.get("password"))):
+            flash("Password/Username do not match")
+            return render_template("login.html")
+        
+        session["user_id"] = dbUserInfo[0][1]
+        flash("You have logged in successfully!")
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash("You have been logged out!")
+    return render_template("login.html")
 
 @app.route("/leaderboard")
 def leaderboard():
@@ -80,7 +119,24 @@ def leaderboard():
 @app.route("/gameOver", methods=["GET", "POST"])
 def gameOver():
     if request.method == "POST":
-        # If user logged in add to DB games played++
-        print(request.form.get("increment"))
+
+        db = sqlite3.connect("user_info.db")
+        cursor = db.cursor()
+
+        if session["user_id"]:
+            cursor.execute("UPDATE users SET rank = rank + 1 WHERE name = ?", [session["user_id"]])
+            db.commit()
+            cursor.close()
+
+        elif (len(cursor.execute('SELECT * FROM users WHERE name = "anonymous";').fetchall()) == 0):
+            cursor.execute("""INSERT INTO users(name, hashed_password, rank) 
+                            VALUES ("anonymous", "ifYouUseThisUserYouAreABadPerson", 1)""")
+            db.commit()
+            cursor.close()
+        
+        else:
+            cursor.execute('UPDATE users SET rank = rank + 1 WHERE name = "anonymous"')
+            db.commit()
+            cursor.close()
 
     return "0"
