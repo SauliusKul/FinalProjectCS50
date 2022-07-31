@@ -2,6 +2,7 @@ import sqlite3
 import json
 from flask import Flask, render_template, url_for, request, flash, redirect, session, get_flashed_messages
 from flask_session import Session
+from flask_socketio import SocketIO, send
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -11,10 +12,26 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_PERMANENT"] = False
 Session(app)
 
+socketio = SocketIO(app)
+
+@socketio.on("my event")
+def handle_my_custom_event(message):
+    print("Received message:" + message["data"])
+    print("")
+    print("")
+
+@socketio.on("Challenged username from user", namespace = "/nameCheck")
+def sendRequest(challengedName):
+    print("hello")
+    print("hello")
+    print("hello")
+    return render_template("index.html")
+
 @app.route("/")
 def index():
     return render_template("index.html")
 
+# allow only alphanumeric
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -142,3 +159,11 @@ def gameOver():
             cursor.close()
 
     return "0"
+
+@app.route ("/live_game", methods=["GET", "POST"])
+def live_game():
+    return render_template("live_game.html")
+
+
+if __name__ == "__main__":
+    socketio.run(app)

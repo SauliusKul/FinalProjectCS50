@@ -3,11 +3,25 @@ script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
 document.getElementsByTagName('head')[0].appendChild(script);
 
 $(document).ready(function() {
-    var columnCount = 7;
-    var rowCount = 6;
+    const columnCount = 7;
+    const rowCount = 6;
     var clickCounter = 0;
-    var numberToWin = 4;
+    const numberToWin = 4;
     var winCount = 0;
+
+    // var socket = io.connect("http://127.0.0.1:5000/")
+    var socket = io();
+    socket.on('connect', function() {
+        socket.emit('y event', {data: 'I\'m connected!'});
+    });
+
+    // $(".challenge").click(function() {
+    //     var challengedName = $(".challengeInput").val();
+
+    //     alert(challengedName);
+    //     socket_name_check.emit("Challenged username", challengedName);
+    // })
+
     const emptyCondidtions = {horizontalCount:0, verticalCount:0, diagonalCount:0};
 
         $(".cell").hover(function() {
@@ -339,5 +353,4 @@ $(document).ready(function() {
 /*
 TODO: Create an invisible circle 1 for each colour
 TODO: Create an AI to play against
-TODO: Add login page and block users from entering without logging in!
 */

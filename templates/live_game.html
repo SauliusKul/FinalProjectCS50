@@ -1,0 +1,15 @@
+{% extends "template.html" %}
+
+{% block title %}
+Versus
+{% endblock %}
+
+{% block main %}
+<p class="form-message">Enter the username of the player you want to challenge!</p>
+<div class="form-div">
+    <form method="post" autocomplete="off">
+        <input autofocus class="challengeInput" name="challengedName" placeholder="Username" maxlength="101">
+        <button type="submit" class="challenge">Challenge!</button>
+    </form>
+</div>
+{% endblock %}
