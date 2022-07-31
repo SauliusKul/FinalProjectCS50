@@ -34,7 +34,7 @@ def register():
             return render_template("register.html")
 
         if (len(userInfo[0]) > 100):
-            flash("Username cannot excede 100 characters >:(")
+            flash("Username cannot exceed 100 characters >:(")
             return render_template("register.html")
 
         cursor.close()
@@ -69,7 +69,6 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
-    get_flashed_messages()
     session.clear()
 
     if (request.method == "POST"):
