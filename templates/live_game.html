@@ -5,11 +5,12 @@ Versus
 {% endblock %}
 
 {% block main %}
+<p class="flash-message challenge"></p>
 <p class="form-message">Enter the username of the player you want to challenge!</p>
 <div class="form-div">
     <form method="post" autocomplete="off">
         <input autofocus class="challengeInput" name="challengedName" placeholder="Username" maxlength="101">
-        <button type="submit" class="challenge">Challenge!</button>
     </form>
+    <button type="submit" class="challenge-button">Challenge!</button>
 </div>
 {% endblock %}

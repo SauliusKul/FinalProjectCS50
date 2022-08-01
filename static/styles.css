@@ -230,6 +230,8 @@ body {
 .flash-message,
 .form-message {
     text-align: center;
+    font-size: var(--bs-body-font-size);
+    -webkit-text-size-adjust: 100%;
 }
 
 .form-message {
@@ -265,4 +267,8 @@ body {
         flex-flow: column wrap;
         align-items: center;
     }
+}
+
+.challenge-button {
+    border: 1px;
 }

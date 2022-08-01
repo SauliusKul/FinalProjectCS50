@@ -12,15 +12,21 @@ $(document).ready(function() {
     // var socket = io.connect("http://127.0.0.1:5000/")
     var socket = io();
     socket.on('connect', function() {
-        socket.emit('y event', {data: 'I\'m connected!'});
+        socket.emit('message', {data: 'I\'m connected!'});
     });
 
-    // $(".challenge").click(function() {
-    //     var challengedName = $(".challengeInput").val();
+    $(".challenge-button").click(function(event) {
+        event.preventDefault();
+        var challengedName = $(".challengeInput").val();
 
-    //     alert(challengedName);
-    //     socket_name_check.emit("Challenged username", challengedName);
-    // })
+        socket.emit("invite", challengedName);
+    })
+
+    socket.on('enableHTML', function(data) {
+        console.log("works");
+        $(".flash-message.challenge").empty();
+        $(".flash-message.challenge").append(data);
+    })
 
     const emptyCondidtions = {horizontalCount:0, verticalCount:0, diagonalCount:0};
 

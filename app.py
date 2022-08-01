@@ -2,8 +2,10 @@ import sqlite3
 import json
 from flask import Flask, render_template, url_for, request, flash, redirect, session, get_flashed_messages
 from flask_session import Session
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO, send, emit
 from werkzeug.security import generate_password_hash, check_password_hash
+import eventlet 
+eventlet.monkey_patch() 
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -12,20 +14,30 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_PERMANENT"] = False
 Session(app)
 
-socketio = SocketIO(app)
+socketio = SocketIO(app,async_mode = 'eventlet')
+# socketio = SocketIO(app)
 
-@socketio.on("my event")
+
+
+@socketio.on("message")
 def handle_my_custom_event(message):
-    print("Received message:" + message["data"])
-    print("")
-    print("")
+    print("Received message: " + message["data"])
 
-@socketio.on("Challenged username from user", namespace = "/nameCheck")
+@socketio.on("invite")
 def sendRequest(challengedName):
-    print("hello")
-    print("hello")
-    print("hello")
-    return render_template("index.html")
+
+    print("Challenged name: " + challengedName)
+    
+    db = sqlite3.connect("user_info.db")
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM users WHERE name = ?", [challengedName])
+
+    nameFromDB = cursor.fetchall()
+
+    if (len(nameFromDB) != 1):
+        socketio.emit("enableHTML", "Such user does not exist")
+        print("Works")
 
 @app.route("/")
 def index():
