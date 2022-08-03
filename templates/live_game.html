@@ -5,7 +5,10 @@ Versus
 {% endblock %}
 
 {% block main %}
+<!--Creates a flash message using flask socket io-->
 <p class="flash-message challenge"></p>
+
+<!--Creates a challenge form, which uses player nicknames to invite another player into a game-->
 <p class="form-message">Enter the username of the player you want to challenge!</p>
 <div class="form-div">
     <form method="post" autocomplete="off">

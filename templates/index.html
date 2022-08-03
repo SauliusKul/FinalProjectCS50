@@ -4,6 +4,7 @@
 Connect4
 {% endblock %}
 
+<!--Creates a banner for the index page above the navbar-->
 {% block body %}
     <div class="banner">
         <h1 class="noMargin">
@@ -13,14 +14,24 @@ Connect4
 {% endblock %}
 
 {% block main %}
+    <!--Initiates a flexbox container for both the game screen and side(above and below if on a small screen)
+        pannels-->
     <div class="gameContainer">
+        <!--Side (top) pannel data-->
         <div class="sidePanel">
             <p>No special moves available for this gamemode!</p>
             <p>Log in to play alternative versions of Connect 4!</p>
         </div>
+
+        <!--Creates a separate flexbox container for the game screen-->
         <div class="game">
+            <!--Creates a grid container inside of the flexbox container-->
             <div class="board">
+                <!--Creates a wrapper for each row to identify the cell's row and select 
+                    cells in the given row - 6 rows are defined in a standard
+                    connect 4 game-->
                 <div class="wrapper-row1 wrapper">
+                    <!--Creates an instance of a cell for each column-->
                     <div class="col1 cell"></div>
                     <div class="col2 cell"></div>
                     <div class="col3 cell"></div>
@@ -66,6 +77,7 @@ Connect4
                     <div class="col7 cell"></div>                        
                 </div>
                 <div class="wrapper-row6 wrapper">
+                    <!--Adds a circle class to mark the lowest unoccupied row in the beggining of the game-->
                     <div class="col1 cell circle"></div>
                     <div class="col2 cell circle"></div>
                     <div class="col3 cell circle"></div>
@@ -77,6 +89,7 @@ Connect4
             </div>
         </div>
 
+        <!--Defines the right (bottom) pannel-->
         <div class="sidePanel">
             <h4>How to play Connect 4</h4>
             <p>Select an empty square on the board to drop a token to the lowest
@@ -85,6 +98,7 @@ Connect4
         </div>
     </div>
 
+    <!--Marks up the winning/draw screen, which fills the entire screen-->
     <div class="xWin">
         <div class="winning-message"></div>
         <form action="/">
@@ -95,8 +109,9 @@ Connect4
         </form>
     </div>
 
-    <div class="xLoss">
-
-    </div>
-    <a hide href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><p style="text-align: center">Footer</p></a>
+    <!--Creates a footer below the game window-->
+    <ul class="footer">
+        <a href="https://github.com/TheCheesy0ne"><li class="footer-text">Check me out on github!</li></a>
+        <a href="https://discord.com/users/248886162465226752"><li class="footer-text">My discord!</li></a>
+    </ul>
 {% endblock %}

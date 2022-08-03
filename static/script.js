@@ -5,16 +5,23 @@ document.getElementsByTagName('head')[0].appendChild(script);
 $(document).ready(function() {
     const columnCount = 7;
     const rowCount = 6;
+    // Counts clicks on the game board, which result in a move being made
     var clickCounter = 0;
     const numberToWin = 4;
+    // Counts wins to identify duplicate win conditions (as in a column and a
+    // diagonal being connected with a single move)
     var winCount = 0;
 
-    // var socket = io.connect("http://127.0.0.1:5000/")
+    // Connects the user to a socket
     var socket = io();
+
+    // On connecting to a socket, sends a welcome message to the server
     socket.on('connect', function() {
         socket.emit('message', {data: 'I\'m connected!'});
     });
 
+    // On clicking a form button, sends the username of the challenged player to the
+    // server and invokes the invite function
     $(".challenge-button").click(function(event) {
         event.preventDefault();
         var challengedName = $(".challengeInput").val();
@@ -22,16 +29,18 @@ $(document).ready(function() {
         socket.emit("invite", challengedName);
     })
 
+    // On receiving a callback from the server, adds flashed message to the html of the
+    // javascript-based message flashing 
     socket.on('enableHTML', function(data) {
         console.log("works");
         $(".flash-message.challenge").empty();
         $(".flash-message.challenge").append(data);
     })
 
+    // Creates an object spread template for win condition counters
     const emptyCondidtions = {horizontalCount:0, verticalCount:0, diagonalCount:0};
 
         $(".cell").hover(function() {
-
             hoveredColumn = firstObjectClass($(this));
             let lowestUnoccupiedRow = findLowestUnoccupiedRow(hoveredColumn);
             
@@ -132,26 +141,25 @@ $(document).ready(function() {
                 {
                     blueWins();
                 }
+
+                if (checkVerticalTable("r", redWinningConditions, table, j))
+                {
+                    redWins();
+                }
+    
+                if (checkVerticalTable("b", blueWinningConditions, table, j))
+                {
+                    blueWins();
+                }
+                
+                // Resets the vertical counters, so they are not carried over into the next column
+                redWinningConditions.verticalCount = 0;
+                blueWinningConditions.verticalCount = 0;
             }
 
+            // Resets the horizontal counters, so they are not carried over into the next row
             blueWinningConditions.horizontalCount = 0;
             redWinningConditions.horizontalCount = 0;
-        }
-
-        for (let i = 0; i < columnCount; i++)
-        {    
-            if (checkVerticalTable("r", redWinningConditions, table, i))
-            {
-                redWins();
-            }
-
-            if (checkVerticalTable("b", blueWinningConditions, table, i))
-            {
-                blueWins();
-            }
-
-            redWinningConditions.verticalCount = 0;
-            blueWinningConditions.verticalCount = 0;
         }
 
         // Could do recursion here?
@@ -211,9 +219,12 @@ $(document).ready(function() {
 
     })
 
-
+    // checks if the cell of a given row or column is of the provided colour
+    // if yes, then increments counter by 1, if no, resets the counter and returns false,
+    // if counter reaches the count required to win the game, returns true
     function checkHorizontalTable(colour, winningConditions, table, row, column)
     {
+
         // Could create a new function
         if (table[row][column] == colour)
         {
@@ -232,10 +243,15 @@ $(document).ready(function() {
         }
     }
 
+    // Checks if the cells of a given column have the colour in question,
+    // returns true if there are 4 cells of the same colour in the given column.
+    // Returns false otherwise and rests the counter
     function checkVerticalTable(colour, winningConditions, table, column)
     {
         for (let i = 0; i < rowCount; i++)
         {   
+            // Could call checkHorizontalTable here instead, but don't know how to pass 
+            // winningConditions.verticalCount reference
             if (table[i][column] == colour)
             {
                 winningConditions.verticalCount++;                
@@ -250,32 +266,44 @@ $(document).ready(function() {
                 winningConditions.verticalCount = 0;
             }
         }
-
+        
         return false;
     }
 
+    // Recursivelly traverses the diagonal cells from top to bottom, and increments the counter
+    // by 1 for every match of the colour given, resets the counter at the end if neither player
+    // has 4 tokens in a diagonal orientation
     function checkDiagonal(colour, winningConditions, table, row, column, modifier) 
     {
+        // Checks if the recursion is out of bounds on the base of the table, 
+        // on the right side of the table, or on the left side of the table
         if (row == rowCount || column == columnCount || column == -1)
         {
+            console.log(column);
             winningConditions.diagonalCount = 0;
             return false;
         }
 
+        // Calls the function recursively, with an incremented row and an modified (+1 or -1 depending
+        // on the direction) column. Returns true, if there are 4 tokens connected diagonally
         if (checkDiagonal(colour, winningConditions, table, row + 1, column + modifier, modifier)) 
         {
             return true;
         }
 
+        // Checks if the current cell is of the colour in question returns true if 
+        // 4 tokens of the same colour are connected diagonally.
         if (table[row][column] == colour)
         {
             winningConditions.diagonalCount++;
+
             if (winningConditions.diagonalCount == numberToWin)
             {
                 return true;
             }
         }
 
+        // Resets the counter if the cell is of a different colour than specified.
         else 
         {
             winningConditions.diagonalCount = 0;

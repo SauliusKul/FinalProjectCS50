@@ -84,7 +84,6 @@ body {
 
 .game {
     max-width: 50%;
-    display: flex;
     aspect-ratio: 7 / 6;
     flex: 3 1;
     align-items: center;
@@ -103,7 +102,7 @@ body {
     }
 
     .game {
-        min-height: 350px;
+        min-height: 330px;
         max-width: 100%;
         flex: 20 1;
     }
@@ -116,16 +115,6 @@ body {
 
 .board {
     display: grid;
-    grid: repeat(6, 1fr);
-    /*grid-template-areas: 
-        "......."
-        "......."
-        "......."
-        "......."
-        "......."
-        "......."; */
-
-    /* gap: 2px 2px; */
     place-items: center;
     width: 100%;
     height: 100%;
@@ -225,6 +214,25 @@ body {
 
 .xWin.show {
     display: flex;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.footer a {
+    text-decoration: none;
+    color: royalblue;
+}
+
+.footer li {
+    flex: 1 1;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .flash-message,
