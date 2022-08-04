@@ -17,8 +17,6 @@ Session(app)
 socketio = SocketIO(app,async_mode = 'eventlet')
 # socketio = SocketIO(app)
 
-
-
 @socketio.on("message")
 def handle_my_custom_event(message):
     print("Received message: " + message["data"])
