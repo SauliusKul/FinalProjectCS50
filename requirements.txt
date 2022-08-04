@@ -72,4 +72,4 @@ gevent==21.12.0
 gevent-websocket==0.10.1
 zope.event==4.5.0
 dnspython==2.2.1
-eventlet==0.33.1
+eventlet==0.30.2
