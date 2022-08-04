@@ -144,10 +144,10 @@ body {
     opacity: 30%;
 }
 
-/* Why before and not just .cell.red-circle? */
 .rd-opaque::before,
 .blu-opaque::before,
-.cell.circle::before {
+.cell.red::before,
+.cell.blue::before {
     content: "";
     height: var(--token-size);
     width: var(--token-size);
@@ -156,12 +156,12 @@ body {
 }
 
 .rd-opaque::before,
-.cell.circle.red::before {
+.cell.red::before {
     background-color: red;
 }
 
 .blu-opaque::before,
-.cell.circle.blue::before {
+.cell.blue::before {
     background-color: blue;
 }
 

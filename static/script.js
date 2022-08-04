@@ -41,9 +41,12 @@ $(document).ready(function() {
     const emptyCondidtions = {horizontalCount:0, verticalCount:0, diagonalCount:0};
 
         $(".cell").hover(function() {
-            hoveredColumn = firstObjectClass($(this));
+            let hoveredColumn = firstObjectClass($(this));
             let lowestUnoccupiedRow = findLowestUnoccupiedRow(hoveredColumn);
             
+            // Adds a "colour"-opaque css class to the lowest unoccupied row of the column, which is being hovered.
+            // Colour is decided based on the clickCounter variable, which is incremented every time a player
+            // makes a move (starting from red).
             if (clickCounter % 2 == 0)
             {
                 addClassToCell(hoveredColumn, lowestUnoccupiedRow, "rd-opaque");  
@@ -56,9 +59,11 @@ $(document).ready(function() {
         },
 
         function() {
-            hoveredColumn = firstObjectClass($(this));
+            let hoveredColumn = firstObjectClass($(this));
             let lowestUnoccupiedRow = findLowestUnoccupiedRow(hoveredColumn);
             
+            // Removes the "colour"-opaque css class of the lowest unoccupied row of the column, which is 
+            // no longer being hovered.
             if (clickCounter % 2 == 0)
             {
                 removeClassFromCell(hoveredColumn, lowestUnoccupiedRow, "rd-opaque");  
@@ -70,22 +75,21 @@ $(document).ready(function() {
             }
     })
 
-
+    // Executes game logic to add a token to the column on which the player has clicked 
+    // and checks for win conditions.
     $(".cell").click(function() {
 
-        selectedColumn = firstObjectClass($(this));
-
-        let lowestUnoccupiedRow = findLowestUnoccupiedRow(selectedColumn);
-
-        addClassToCell(selectedColumn, lowestUnoccupiedRow, "circle", 1);
-        
+        let selectedColumn = firstObjectClass($(this));
+        let lowestUnoccupiedRow = findLowestUnoccupiedRow(selectedColumn);        
         let currentLowestCell = $(".wrapper-row" + lowestUnoccupiedRow + " ." + selectedColumn);
-        
+
+        // Adds css class "red" if it's red player's turn, removes hovered cell class
         if (clickCounter % 2 == 0) {
             currentLowestCell.addClass("red");
             removeClassFromCell(selectedColumn, lowestUnoccupiedRow, "rd-opaque");
         }
 
+        // Adds css class "blue" if it's blue player's turn, removes hovered cell class
         else 
         {
             currentLowestCell.addClass("blue");
@@ -96,10 +100,11 @@ $(document).ready(function() {
 
         for (let i = 0; i < rowCount; i++)
         {
-            table[i] = new Array(columnCount);
+            table[i] = new Array();
         }
 
-        // Rewrites the entire table each click
+        // BAD CODE Rewrites the entire table each click
+        // Creates a 2D array of the game from the html tags
         for (let i = 0; i < rowCount; i++)
         {
             for (let j = 0; j < columnCount; j++)
@@ -121,12 +126,12 @@ $(document).ready(function() {
             }
         }
 
-        // Can be 1 variable :D
+        // Initializes the winning conditions objects, since the values are to be passed by reference
         var redWinningConditions = {...emptyCondidtions};
         var blueWinningConditions = {...emptyCondidtions};
 
 
-        // Connect the two for's
+        // Checks for horizontal and vertical win conditions
         for (let i = 0; i < rowCount; i++)
         {
             for (let j = 0; j < columnCount; j++)
@@ -134,22 +139,22 @@ $(document).ready(function() {
                 
                 if (checkHorizontalTable("r", redWinningConditions, table, i, j))
                 {
-                    redWins();
+                    winner("Red wins!", "red");
                 }
 
                 if (checkHorizontalTable("b", blueWinningConditions, table, i, j))
                 {
-                    blueWins();
+                    winner("Blue wins!", "blue");
                 }
 
                 if (checkVerticalTable("r", redWinningConditions, table, j))
                 {
-                    redWins();
+                    winner("Red wins!", "red");
                 }
     
                 if (checkVerticalTable("b", blueWinningConditions, table, j))
                 {
-                    blueWins();
+                    winner("Blue wins!", "blue");
                 }
                 
                 // Resets the vertical counters, so they are not carried over into the next column
@@ -162,34 +167,39 @@ $(document).ready(function() {
             redWinningConditions.horizontalCount = 0;
         }
 
-        // Could do recursion here?
+        // Checks diagonal win conditions for the two diagonals, which do not initiate on the top row 
         for (let i = 1; i < rowCount - (numberToWin - 1); i++)
         {
+            // checkDiagonal structure: Colour, winning counter object, 2D table, starting row, starting column,
+            // checking direction where 1 = left to right; -1 = right to left
             if (checkDiagonal("r", redWinningConditions, table, i, 0, 1) || checkDiagonal("r", redWinningConditions, table, i, 6, -1)) 
             {
-                redWins();
+                winner("Red wins!", "red");
             }
 
             if (checkDiagonal("b", blueWinningConditions, table, i, 0, 1) || checkDiagonal("b", blueWinningConditions, table, i, 6, -1))
             {
-                blueWins();
+                winner("Blue wins!", "blue");
             }    
         }
 
-        for (let j = 0; j < columnCount - (numberToWin - 1); j++)
+        // Checks diagonal win conditions for the remaining diagonals, which initiate on the top row         
+        for (let i = 0; i < columnCount - (numberToWin - 1); i++)
         {
-            if (checkDiagonal("r", redWinningConditions, table, 0, j, 1) || checkDiagonal("r", redWinningConditions, table, 0, columnCount - j, -1))
+            if (checkDiagonal("r", redWinningConditions, table, 0, i, 1) || checkDiagonal("r", redWinningConditions, table, 0, columnCount - i, -1))
             {
-                redWins();
+                winner("Red wins!", "red");
             }
 
-            if (checkDiagonal("b", blueWinningConditions, table, 0, j, 1) || checkDiagonal("b", blueWinningConditions, table, 0, columnCount - j, -1))
+            if (checkDiagonal("b", blueWinningConditions, table, 0, i, 1) || checkDiagonal("b", blueWinningConditions, table, 0, columnCount - i, -1))
             {
-                blueWins();
+                winner("Blue wins!", "blue");
             }
         }
 
-        drawCount = 0;
+        // Checks if the top of the board is filled and noone has won yet (since the 
+        // winning functions have not been invoked above)
+        let drawCount = 0;
 
         for (let i = 0; i < columnCount; i++)
         {
@@ -201,15 +211,14 @@ $(document).ready(function() {
 
         if (drawCount == 7)
         {
-            $(".xWin").addClass("show");
-            $(".winning-message").append("Draw!");
-            $(".winning-message").css("color", "pink");
-            sendIncrementAjax();
+            winner("Draw!", "pink");
         }
 
-        try 
+        // Checks if the cell is an actual cell and not outside of the bounds, increments the click counter by 1
+        // if true. Catches errors, so they don't show up in the console.
+        try
         {
-            if ($(".wrapper-row" + lowestUnoccupiedRow + " ." + selectedColumn).attr("class").includes("circle"))
+            if (currentLowestCell.attr("class").includes("red") || currentLowestCell.attr("class").includes("blue"))
             {
                 clickCounter++;
             }            
@@ -279,7 +288,6 @@ $(document).ready(function() {
         // on the right side of the table, or on the left side of the table
         if (row == rowCount || column == columnCount || column == -1)
         {
-            console.log(column);
             winningConditions.diagonalCount = 0;
             return false;
         }
@@ -311,10 +319,13 @@ $(document).ready(function() {
         }
     }
 
+    // Identifies and returns the lowest unoccupied row in a given column based on if the cell 
+    // has css classes "red" or "blue". 
     function findLowestUnoccupiedRow(selectedColumn)
     {
         let lowestUnoccupiedRow = 0;
 
+        // Iterates through all of the rows (rowCount being the lowest row)
         for (i = 1; i <= rowCount; i++)
         {   
             lowestUnoccupiedCellAttributes = $(".wrapper-row" + i + " ." + selectedColumn).attr("class");
@@ -330,49 +341,41 @@ $(document).ready(function() {
         return lowestUnoccupiedRow;
     }
 
+    // Returns the first css class of an html tag as a string
     function firstObjectClass(itemObject)
     {
         return itemObject.attr("class").split(/\s+/)[0];
     }
 
+    // Adds a specified class to the cell of a given row and column
     function addClassToCell (column, row, Class, modifier = 0)
     {
         $(".wrapper-row" + (row - modifier) + " ." + column).addClass(Class);
     }
 
+    // Removes a specified class from the cell of a given row and column
     function removeClassFromCell (column, row, Class, modifier = 0)
     {
         $(".wrapper-row" + (row - modifier) + " ." + column).removeClass(Class);
     }
 
-    function redWins()
-    {   
-        if (winCount == 0)
-        {
-            $(".xWin").addClass("show");
-            $(".winning-message").append("Red wins!");
-            $(".winning-message").css("color", "red");
-
-            sendIncrementAjax();
-
-            winCount++;
-        }
-    }
-
-    function blueWins()
+    // Shows HTML div with the winning message if the player who had blue tokens wins
+    function winner(winningMessage, colour)
     {
         if (winCount == 0)
         {
             $(".xWin").addClass("show");
-            $(".winning-message").append("Blue wins!");
-            $(".winning-message").css("color", "blue");
-    
+            $(".winning-message").append(winningMessage);
+            $(".winning-message").css("color", colour);
+
+            // Sends an ajax object to the server in order to increment the player's games played count
             sendIncrementAjax();
     
             winCount++;    
         }
     }
 
+    // Invokes server side route /gameover and sends an increment object to the function
     function sendIncrementAjax()
     {
         $.ajax({
