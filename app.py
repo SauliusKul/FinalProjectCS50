@@ -1,5 +1,4 @@
 import sqlite3
-import json
 from flask import Flask, render_template, url_for, request, flash, redirect, session, get_flashed_messages
 from flask_session import Session
 from flask_socketio import SocketIO, send, emit
