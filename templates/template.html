@@ -30,7 +30,7 @@
             <a href="{{ url_for("leaderboard") }}"><li>Leaderboard</li></a>
             
             {% if session["user_id"] %}
-            <a href="{{ url_for("live_game") }}"><li>Play online</li></a>
+            <a hidden href="{{ url_for("live_game") }}"><li>Play online</li></a>
             <a href="{{ url_for("logout") }}"><li>Logout</li></a>
 
             {% else %}
