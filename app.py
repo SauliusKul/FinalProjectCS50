@@ -17,9 +17,11 @@ Session(app)
 socketio = SocketIO(app,async_mode = 'eventlet')
 # socketio = SocketIO(app)
 
+
 @socketio.on("message")
 def handle_my_custom_event(message):
     print("Received message: " + message["data"])
+
 
 @socketio.on("invite")
 def sendRequest(challengedName):
@@ -37,9 +39,11 @@ def sendRequest(challengedName):
         socketio.emit("enableHTML", "Such user does not exist")
         print("Works")
 
+
 @app.route("/")
 def index():
     return render_template("index.html")
+
 
 # allow only alphanumeric
 @app.route("/register", methods=["GET", "POST"])
@@ -93,6 +97,7 @@ def register():
 
     return render_template("register.html")
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
@@ -128,11 +133,13 @@ def login():
         session["user_id"] = dbUserInfo[0][1]
     return render_template("login.html")
 
+
 @app.route("/logout")
 def logout():
     session.clear()
     flash("You have been logged out!")
     return render_template("login.html")
+
 
 @app.route("/leaderboard")
 def leaderboard():
@@ -144,6 +151,7 @@ def leaderboard():
     users = cursor.fetchall()
 
     return render_template("leaderboard.html", users=users)
+
 
 @app.route("/gameOver", methods=["GET", "POST"])
 def gameOver():
@@ -169,6 +177,7 @@ def gameOver():
             cursor.close()
 
     return "0"
+
 
 @app.route ("/live_game", methods=["GET", "POST"])
 def live_game():
