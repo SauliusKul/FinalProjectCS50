@@ -183,6 +183,6 @@ def gameOver():
 def live_game():
     return render_template("live_game.html")
 
-
+ 
 if __name__ == "__main__":
     socketio.run(app)
