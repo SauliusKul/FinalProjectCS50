@@ -14,7 +14,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_PERMANENT"] = False
 Session(app)
 
-socketio = SocketIO(app,async_mode = 'eventlet')
+socketio = SocketIO(app,async_mode = 'gevent')
 # socketio = SocketIO(app)
 
 
