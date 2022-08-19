@@ -1,10 +1,11 @@
+from gevent import monkey
+monkey.patch_all() 
 import sqlite3
 from flask import Flask, render_template, url_for, request, flash, redirect, session, get_flashed_messages
 from flask_session import Session
 from flask_socketio import SocketIO, send, emit
 from werkzeug.security import generate_password_hash, check_password_hash
-from gevent import monkey
-monkey.patch_all() 
+
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
